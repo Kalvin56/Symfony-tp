@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ArticleController extends AbstractController
 {
@@ -25,6 +27,33 @@ class ArticleController extends AbstractController
         );
         return $this->render('article/index.html.twig', [
             'articles' => $pagination,
+        ]);
+    }
+
+    /**
+     * @Route("/article/new", name="article.create")
+     */
+    public function create(Request $request, EntityManagerInterface $em): Response
+    {
+        $article = new Article();
+
+        $articleForm = $this->createForm(ArticleType::class, $article);
+
+        $articleForm->handleRequest($request);
+
+        if ($articleForm->isSubmitted() && $articleForm->isValid())
+        {
+            $article->setCreatedAt(new \DateTime);
+            $em->persist($article);
+            $em->flush();
+
+            return $this->redirectToRoute('article.show', [
+                'id' => $article->getId()
+            ]);
+        }
+
+        return $this->render('article/create.html.twig', [
+            'articleForm' => $articleForm->createView() 
         ]);
     }
 

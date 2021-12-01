@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create article{% endblock %}
+
+{% block body %}
+
+<a href="{{ path('article.index')}}">Annuler</a>
+
+ {{ form_start(articleForm) }}
+    <div class="form-group">
+        <label for="article_title">Titre de l'article</label>
+        {{ form_widget(articleForm.title) }}
+        <small class="text-danger">
+            {{ form_errors(articleForm.title) }}
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="article_title">Contenu de l'article</label>
+        {{ form_widget(articleForm.content) }}
+        <small class="text-danger">
+            {{ form_errors(articleForm.content) }}
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="article_title">Auteur de l'article</label>
+        {{ form_widget(articleForm.author) }}
+        <small class="text-danger">
+            {{ form_errors(articleForm.author) }}
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="article_title">Catégorie de l'article</label>
+        {{ form_widget(articleForm.category) }}
+        <small class="text-danger">
+            {{ form_errors(articleForm.category) }}
+        </small>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">
+        Créer l'article
+    </button>
+
+    {{ form_errors(articleForm) }}
+{{ form_end(articleForm) }}
+
+{% endblock %}

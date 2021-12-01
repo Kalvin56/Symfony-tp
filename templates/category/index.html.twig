@@ -17,7 +17,7 @@
             <tr>
                 <th scope="row"><a href="category/{{category.id}}">{{category.name}}</a></th>
                 <td>{{category.description}}</td>
-                {# <td>{{category.articles}}</td> #}
+                <td>{{ numberArticles[loop.index - 1] }}</td>
             </tr>
         {% endfor %}
         </tr>

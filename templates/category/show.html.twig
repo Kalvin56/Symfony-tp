@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category{% endblock %}
+
+{% block body %}
+
+<a href="/category">Retour</a>
+
+<h1> {{categoryName}} - {{numberArticles}}</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Content</th>
+        <th scope="col">Created_at</th>
+        <th scope="col">Author</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in articles %}
+            <tr>
+                <th scope="row"><a href="article/{{article.id}}">{{article.title}}</a></th>
+                <td>{{article.content}}{{ article.content|slice(0, 300) ~ '...'}} <a href="article/{{article.id}}">voir plus</a></td>
+                <td>{{article.createdAt | date('d/m/Y')}}</td>
+                <td>{{article.author}}</td>
+            </tr>
+        {% endfor %}
+        </tr>
+    </tbody>
+</table>
+{{ knp_pagination_render(articles) }}
+
+{% endblock %}
