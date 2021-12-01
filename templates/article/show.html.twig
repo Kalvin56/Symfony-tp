@@ -13,6 +13,7 @@
         <th scope="col">Content</th>
         <th scope="col">Created_at</th>
         <th scope="col">Author</th>
+        <th scope="col">Editer</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
                 <td>{{article.content}}{{article.content}}</td>
                 <td>{{article.createdAt | date('d/m/Y')}}</td>
                 <td>{{article.author}}</td>
+                <td><a href="{{path('article.edit', {id : article.id})}}">Editer</a></td>
             </tr>
         </tr>
     </tbody>

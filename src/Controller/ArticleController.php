@@ -58,6 +58,39 @@ class ArticleController extends AbstractController
     }
 
     /**
+     * @Route("/article/{id}/edit", name="article.edit")
+     */
+    public function edit(Request $request, EntityManagerInterface $em): Response
+    {
+        $id = $request->attributes->get('id');
+        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
+        $article = $articleRepository->find($id);
+
+        if (!$article)
+        {
+            throw $this->createNotFoundException('The article does not exist');
+        }
+
+        $articleForm = $this->createForm(ArticleType::class, $article);
+
+        $articleForm->handleRequest($request);
+
+        if ($articleForm->isSubmitted() && $articleForm->isValid())
+        {
+            $em->persist($article);
+            $em->flush();
+
+            return $this->redirectToRoute('article.show', [
+                'id' => $article->getId()
+            ]);
+        }
+        
+        return $this->render('article/update.html.twig', [
+            'articleForm' => $articleForm->createView() 
+        ]);
+    }
+
+    /**
      * @Route("/article/{id}", name="article.show")
      */
     public function show(Request $request): Response
