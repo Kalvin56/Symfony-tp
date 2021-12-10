@@ -20,7 +20,7 @@
     <tbody>
         {% for article in articles %}
             <tr>
-                <th scope="row"><a href="article/{{article.id}}">{{article.title}}</a></th>
+                <th scope="row"><a href="{{path('article.show', {id : article.id})}}">{{article.title}}</a></th>
                 <td>{{article.content}}{{ article.content|slice(0, 300) ~ '...'}} <a href="article/{{article.id}}">voir plus</a></td>
                 <td>{{article.createdAt | date('d/m/Y')}}</td>
                 <td>{{article.author}}</td>

@@ -134,4 +134,23 @@ class ArticleController extends AbstractController
         }
         
     }
+
+    /**
+     * @Route("/article/{id}/like", name="article.delete")
+     */
+    public function like(Request $request, EntityManagerInterface $em): Response
+    {
+        $id = $request->attributes->get('id');
+        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
+        $article = $articleRepository->find($id);
+        if (!$article)
+        {
+            return $this->json('The article does not exist', 404);
+        }
+        $article->incrementLikes();
+        $em->persist($article);
+        $em->flush();
+        return $this->json(['likes' => $article->getLikes()], 200);
+        
+    }
 }

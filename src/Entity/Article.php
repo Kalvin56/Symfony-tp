@@ -45,6 +45,12 @@ class Article
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $likes;
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,5 +114,20 @@ class Article
         $this->category = $category;
 
         return $this;
+    }
+ 
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+ 
+    public function incrementLikes()
+    {
+        $this->likes += 1;
+    }
+ 
+    public function decrementLikes()
+    {
+        $this->likes -= 1;
     }
 }
