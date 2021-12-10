@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 class ArticleController extends AbstractController
 {
@@ -105,5 +106,32 @@ class ArticleController extends AbstractController
         return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
+    }
+
+    /**
+     * @Route("/article/{id}/delete", name="article.delete")
+     */
+    public function delete(Request $request, EntityManagerInterface $em): Response
+    {
+        $id = $request->attributes->get('id');
+        $articleRepository = $this->getDoctrine()->getRepository(Article::class);
+        $article = $articleRepository->find($id);
+        if (!$article)
+        {
+            throw $this->createNotFoundException('The article does not exist');
+        }
+        $csrfToken = $_GET['token'];
+        if ($this->isCsrfTokenValid('delete-item', $csrfToken))
+        {
+            $em->remove($article);
+            $em->flush();
+
+            $this->addFlash('success', "L'article {$article->getTitle()} a bien été supprimé !");
+            
+            return $this->redirectToRoute('article.index');
+        }else{
+            throw new InvalidCsrfTokenException();
+        }
+        
     }
 }

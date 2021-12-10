@@ -14,6 +14,7 @@
         <th scope="col">Created_at</th>
         <th scope="col">Author</th>
         <th scope="col">Editer</th>
+        <th scope="col">Supprimer</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,13 @@
                 <td>{{article.createdAt | date('d/m/Y')}}</td>
                 <td>{{article.author}}</td>
                 <td><a href="{{path('article.edit', {id : article.id})}}">Editer</a></td>
+                <td>
+                    <form action="{{path('article.delete', {id : article.id})}}" onsubmit="return confirm('Etes-vous sûr de supprimer cet article ?')">
+                        <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="Supprimer">
+                    </form>
+                <td>
             </tr>
         </tr>
     </tbody>
